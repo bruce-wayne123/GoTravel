@@ -8,8 +8,8 @@ const DUMMY_PLACES = [{
     imageUrl: "https://media.timeout.com/images/101705309/image.jpg",
     address: "20 W 34th St., New York, NY 10001, United States",
     location: {
-        lat: 40.748289,
-        lng: -73.9877555
+        lat: 28.7041,
+        lng: 77.1025
     },
     creator: "u1"
 },
