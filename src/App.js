@@ -4,6 +4,7 @@ import MainNavigation from "./shared/components/Navigation/MainNavigation";
 import Users from './user/pages/Users';
 import NewPlace from './places/pages/NewPlace';
 import UserPlaces from "./places/pages/UserPlaces";
+import UpdatePlace from './places/pages/UpdatePlace';
 function App() {
   return (
     <>
@@ -13,8 +14,9 @@ function App() {
           <main>
             <Routes>
               <Route path='/' element={<Users />} />
-              <Route path="/:userId/places" element={<UserPlaces />} exact />
-              <Route path='/places/new' element={<NewPlace />} />
+              <Route path="/:userId/places" element={<UserPlaces />} exact="true" />
+              <Route path='/places/new' element={<NewPlace />} exact="true" />
+              <Route path='/places/:placeId' element={<UpdatePlace />} />
               <Route path='*' element={<Users />} />
             </Routes>
           </main>
