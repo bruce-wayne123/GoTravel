@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-
+import Card from '../../shared/components/UIElements/Card';
 import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
 import {
@@ -10,37 +10,38 @@ import {
 import { useForm } from '../../shared/hooks/form-hooks';
 import '../styles/PlaceForm.css';
 
-const DUMMY_PLACES = [
-    {
-        id: 'p1',
-        title: 'Empire State Building',
-        description: 'One of the most famous sky scrapers in the world!',
-        imageUrl:
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/NYC_Empire_State_Building.jpg/640px-NYC_Empire_State_Building.jpg',
-        address: '20 W 34th St, New York, NY 10001',
-        location: {
-            lat: 40.7484405,
-            lng: -73.9878584
+const DUMMY_PLACES =
+    [
+        {
+            id: "p1",
+            title: "Empire State Building",
+            description: "One of the most famous sky scrapers in the world",
+            imageUrl: "https://media.timeout.com/images/101705309/image.jpg",
+            address: "20 W 34th St., New York, NY 10001, United States",
+            location: {
+                lat: 28.7041,
+                lng: 77.1025
+            },
+            creator: "u1"
         },
-        creator: 'u1'
-    },
-    {
-        id: 'p2',
-        title: 'Empire State Building',
-        description: 'One of the most famous sky scrapers in the world!',
-        imageUrl:
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/NYC_Empire_State_Building.jpg/640px-NYC_Empire_State_Building.jpg',
-        address: '20 W 34th St, New York, NY 10001',
-        location: {
-            lat: 40.7484405,
-            lng: -73.9878584
-        },
-        creator: 'u2'
-    }
-];
+        {
+            id: "p2",
+            title: "Burj Khalifa",
+            description: "The Burj Khalifa is a skyscraper in Dubai, United Arab Emirates. It is the world's tallest building.",
+            imageUrl: "https://lh5.googleusercontent.com/p/AF1QipNouThhC7edsvkTYfp_oDDFtfTLB9W5fdXOMxG-=w243-h244-n-k-no-nu",
+            address: "1 Sheikh Mohammed bin Rashid Blvd - Downtown Dubai - Dubai - United Arab Emirates",
+            location: {
+                lat: 25.1972,
+                lng: 55.2744
+            },
+            creator: "u2"
+        }
+    ];
+
 
 const UpdatePlace = () => {
     const placeId = useParams().placeId;
+    const [isLoading, setIsLoading] = useState(true);
     const identifiedPlace = DUMMY_PLACES.find(p => p.id === placeId);
     const [formState, inputHandler, setFormData] = useForm(
         {
@@ -57,16 +58,19 @@ const UpdatePlace = () => {
     );
 
     useEffect(() => {
-        setFormData({
-            title: {
-                value: identifiedPlace.title,
-                isValid: true
-            },
-            description: {
-                value: identifiedPlace.description,
-                isValid: true
-            },
-        }, true);
+        if (identifiedPlace) {
+            setFormData({
+                title: {
+                    value: identifiedPlace.title,
+                    isValid: true
+                },
+                description: {
+                    value: identifiedPlace.description,
+                    isValid: true
+                },
+            }, true);
+        }
+        setIsLoading(false);
     }, [setFormData, identifiedPlace]);
 
     const placeUpdateSubmitHandler = event => {
@@ -85,12 +89,14 @@ const UpdatePlace = () => {
     if (!identifiedPlace) {
         return (
             <div className="center">
-                <h2>Could not find place!</h2>
+                <Card>
+                    <h2>Could not find place!</h2>
+                </Card>
             </div>
         );
     }
 
-    if (!formState.inputs.title.value) {
+    if (isLoading) {
         return (
             <div className="center">
                 <h2>Loading ...</h2>

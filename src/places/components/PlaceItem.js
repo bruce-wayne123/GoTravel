@@ -7,10 +7,17 @@ import Map from '../../shared/components/UIElements/Map';
 const PlaceItem = (props) => {
     console.log(props);
     const [showMap, setShowMap] = useState(false);
-
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
     const openMapHandler = () => setShowMap(true);
     const closeMapHandler = () => setShowMap(false);
+    const showDeleteWarningHandeler = () => { setShowConfirmModal(true) };
+    const cancelDeleteHandeler = () => { setShowConfirmModal(false) };
 
+    const confirmDeleteHandeler = () => {
+        setShowConfirmModal(false);
+        console.log("Deleting")
+
+    };
     return <>
         <Modal show={showMap} onCancel={closeMapHandler}
             header={props.address} contentClass="place-item__modal-content"
@@ -23,6 +30,17 @@ const PlaceItem = (props) => {
             <div className="map-container">
                 <Map zoom={50} center={props.coordinates} />
             </div>
+        </Modal>
+        <Modal show={showConfirmModal}
+            onCancel={cancelDeleteHandeler}
+            header="Are you sure?" foooterClass="place-item__modal-actions" footer={
+                <>
+                    <Button inverse onClick={cancelDeleteHandeler}>CANCEL</Button>
+                    <Button danger onClick={confirmDeleteHandeler}>DELETE</Button>
+                </>
+            }>
+            <p>Do you want to proceed and delete this place?
+                Please note that it cannot be undone.</p>
         </Modal>
         <li className="place-item">
             <Card className="place-item__content">
@@ -37,12 +55,11 @@ const PlaceItem = (props) => {
                 <div className="place-item__actions">
                     <Button inverse onClick={openMapHandler}>VIEW ON MAP</Button>
                     <Button to={`/places/${props.id}`}>EDIT </Button>
-                    <Button danger>DELETE </Button>
+                    <Button danger onClick={showDeleteWarningHandeler}>DELETE </Button>
                 </div>
             </Card>
         </li>
-    </>
-        ;
+    </>;
 };
 
 export default PlaceItem;
