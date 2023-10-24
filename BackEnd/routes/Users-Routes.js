@@ -14,10 +14,10 @@ const USERS = [{
 }
 ];
 
-router.get("/uid", (req, resp) => {
+router.get("/:uid", (req, resp) => {
     const userId = req.params.uid;
-    let user = USERS.find(user.id === userId);
-    resp.send("HELLO");
+    let user = USERS.find(user => user.id === userId);
+    resp.send({ user });
 });
 
 module.exports = router;
